@@ -1,5 +1,8 @@
 package genesis
 
+// Auteur : Martial Zinsou
+// Configuration du bloc génèse PulseChain
+
 type Genesis struct {
 	ChainID       uint64
 	Coinbase      string

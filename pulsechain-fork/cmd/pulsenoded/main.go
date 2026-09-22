@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+
 	"pulsechain-fork/genesis"
 	"pulsechain-fork/internal/blockchain"
 	"pulsechain-fork/internal/consensus"
@@ -10,6 +11,9 @@ import (
 	"pulsechain-fork/internal/rpc"
 	"github.com/ethereum/go-ethereum/rlp"
 )
+
+// Auteur : Martial Zinsou
+// Point d'entrée principal du nœud PulseChain Fork
 
 func main() {
 	// Initialisation du bloc génèse

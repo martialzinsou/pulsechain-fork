@@ -2,6 +2,10 @@
 
 Un prototype complet de blockchain fork de PulseChain implémenté en Go. Ce projet sert de base pour créer votre propre nœud PulseChain avec une compatibilité totale avec l'écosystème Ethereum.
 
+## Auteur
+
+**Martial Zinsou** - https://github.com/martialzinsou
+
 ## Aperçu
 
 Ce projet fork de PulseChain fournit :
@@ -69,7 +73,7 @@ go build -o pulsenoded ./cmd/pulsenoded
 go run ./cmd/pulsenoded
 ```
 
-Le nœud démarrera par défaut sur :
+Le nœud démarre par défaut sur :
 - **Port RPC** : 8545
 - **Port P2P** : 30303
 - **RPC CORS** : * (pour le développement)
@@ -153,11 +157,8 @@ type Block struct {
     GasLimit   uint64
     GasUsed    uint64
     Coinbase   common.Address
-    Root       []byte
-    TxHash     []byte
-    ReceiptsRoot []byte
-    Status     bool
     Transactions []*Transaction
+    StateRoot  common.Hash
 }
 ```
 
@@ -204,3 +205,4 @@ Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
 
 - GitHub : https://github.com/martialzinsou/pulsechain-fork
 - Issues : https://github.com/martialzinsou/pulsechain-fork/issues
+- Auteur : Martial Zinsou
