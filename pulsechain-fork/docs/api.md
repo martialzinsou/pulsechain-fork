@@ -1,14 +1,15 @@
 # Documentation API JSON-RPC - PulseChain Fork
 
-> **Auteur :** Martial Zinsou  
-> **Dépôt :** https://github.com/martialzinsou/pulsechain-fork  
-> **Spécification :** JSON-RPC 2.0 (Compatible Ethereum & PulseChain)
+> **Auteur et Développeur :** Martial Zinsou  
+> **Dépôt officiel :** https://github.com/martialzinsou/pulsechain-fork  
+> **Spécification :** JSON-RPC 2.0 (Compatible Ethereum & PulseChain)  
+> **Licence :** MIT (c) 2026 Martial Zinsou  
 
 ---
 
 ## Vue d'ensemble
 
-Le nœud PulseChain Fork expose une interface JSON-RPC 2.0 sur le port `8545`. Cette interface permet à tout client Web3 standard (MetaMask, Ethers.js, Web3.js, Foundry, Hardhat) d'interagir nativement avec la blockchain.
+Le nœud PulseChain Fork conçu par **Martial Zinsou** expose une interface JSON-RPC 2.0 sur le port `8545`. Cette interface permet à tout client Web3 standard (MetaMask, Ethers.js, Web3.js, Foundry, Hardhat) d'interagir nativement avec la blockchain.
 
 ### Endpoint
 - **URL standard :** `http://localhost:8545`
@@ -179,3 +180,8 @@ Retourne l'ID réseau sous forme de chaîne décimale.
 | `-32601` | Method not found | Méthode demandée non implémentée sur ce nœud |
 | `-32602` | Invalid params | Paramètres manquants ou type incorrect |
 | `-32603` | Internal error | Erreur d'exécution interne du moteur |
+
+---
+
+**Auteur du projet :** Martial Zinsou  
+**Dépôt :** https://github.com/martialzinsou/pulsechain-fork

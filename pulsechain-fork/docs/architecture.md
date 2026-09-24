@@ -1,65 +1,110 @@
-# Architecture Documentation
+# Architecture Technique - PulseChain Fork
 
-## Auteur : Martial Zinsou
+> **Auteur et Architecte :** Martial Zinsou  
+> **Dépôt GitHub :** https://github.com/martialzinsou/pulsechain-fork  
+> **Version :** 1.0.0  
+> **Licence :** MIT (c) 2026 Martial Zinsou  
 
-### Vue d'ensemble
+---
 
-Ce document décrit l'architecture du projet PulseChain Fork, une implémentation blockchain en Go compatible avec l'écosystème Ethereum.
+## 1. Vue d'ensemble du Système
 
-### Structure des composants
+Ce document décrit l'architecture complète du projet **PulseChain Fork**, conçu et développé par **Martial Zinsou**. Cette implémentation blockchain modulaire en Go est totalement interopérable avec l'écosystème Ethereum et PulseChain.
 
-#### 1. Moteur de blockchain (`internal/blockchain/`)
+```text
++-------------------------------------------------------+
+|          Clients Web3 (MetaMask, Ethers.js)           |
++-------------------------------------------------------+
+                           | JSON-RPC (HTTP :8545)
+                           v
++-------------------------------------------------------+
+|        Serveur RPC (internal/rpc/server.go)           |
+|                 Auteur: Martial Zinsou                |
++-------------------------------------------------------+
+                           |
+            +--------------+--------------+
+            |                             |
+            v                             v
++-----------------------+     +-------------------------+
+|    Moteur Blockchain   |     |   Registre StateDB      |
+| (internal/blockchain) |<--->|   (internal/ledger)     |
++-----------------------+     +-------------------------+
+            |                             |
+            +--------------+--------------+
+                           |
+                           v
++-------------------------------------------------------+
+|       Consensus PoA (internal/consensus/proof.go)     |
+|          Période 3s | Validation des blocs            |
++-------------------------------------------------------+
+```
 
-Le moteur de blockchain est le cœur du système, responsable de :
+---
 
-- **Structure des blocs** : définition du format Block et Transaction
-- **Validation** : vérification de la validité des blocs via le consensus
-- **Gestion de chaîne** : stockage et récupération de la chaîne de blocs
-- **État du réseau** : gestion des comptes, soldes et stockage
+## 2. Structure des Composants et Responsabilités
 
-Composants clés :
-- `block.go` : Structures Block et Transaction, méthodes de hachage
-- `chain.go` : Gestion de la chaîne, ajout de blocs, requêtes d'état
+### 2.1. Moteur de Blockchain (`internal/blockchain/`)
+*Développé par Martial Zinsou.*
 
-#### 2. Consensus (`internal/consensus/`)
+- **Structures Fondamentales (`block.go`) :**
+  - Définition des blocs (`Block`) et transactions signées (`Transaction`).
+  - Hachage cryptographique SHA-256 avec sérialisation déterministe.
+  - Arbre de transactions (`TxsHash`) et racine d'état (`StateRoot`).
+  - Fonction d'initialisation du bloc Genesis (`GenesisBlock`).
 
-L'algorithme de consensus suit le modèle PulseChain Proof-of-Authority :
+- **Gestionnaire de Chaîne (`chain.go`) :**
+  - Validation séquentielle des blocs (`ParentHash`, index chronologique).
+  - Intégration du consensus pour approbation des nouveaux blocs.
+  - Exécution des transactions et mise à jour d'état atomique.
+  - Fonction de minage de blocs (`MineBlock`) avec récompenses coinbase.
 
-- **Validation de blocs** : vérification de la preuve de travail/d'autorité
-- **Ajustement de difficulté** : calcul de la cible de hachage
-- **Paramètres de réseau** : temps de bloc, difficulté cible
+---
 
-Fichier principal : `proof.go` - Implémentation PoA avec calcul de difficulté
+### 2.2. Algorithme de Consensus PoA (`internal/consensus/`)
+*Développé par Martial Zinsou.*
 
-#### 3. Ledger (`internal/ledger/`)
+- **Proof-of-Authority (`proof.go`) :**
+  - Cadence de blocs rapide optimisée à **3 secondes** (calquée sur PulseChain).
+  - Gestion de la liste des autorités et validateurs autorisés.
+  - Ajustement dynamique de la difficulté et vérification de la dérive temporelle.
+  - Algorithme de validation par signature et nonce.
 
-Gestion du registre des comptes et des soldes :
+---
 
-- **StateDB** : base de données d'état avec comptes, nonces et stockage
-- **Account management** : création, mise à jour, consultation de comptes
-- **Solde des tokens** : gestion ETH et tokens PRC-20
+### 2.3. Registre d'État & Ledger (`internal/ledger/`)
+*Développé par Martial Zinsou.*
 
-Fichier principal : `account.go` - Gestion des comptes utilisateur
+- **Gestionnaire `StateDB` (`account.go`) :**
+  - Modèle de comptes avec `Address`, `Balance` en PLS (précision 18 décimales / `*big.Int`), `Nonce`, `CodeHash`.
+  - Protection contre la concurrence via verrous lecture/écriture (`sync.RWMutex`).
+  - Mécanisme anti-rejeu et débits sécurisés avec contrôle de solde préalable.
+  - Calcul déterministe de la racine d'état (`stateRoot`).
 
-#### 4. Serveur RPC (`internal/rpc/`)
+---
 
-Interface JSON-RPC compatible Ethereum :
+### 2.4. Serveur JSON-RPC 2.0 (`internal/rpc/`)
+*Développé par Martial Zinsou.*
 
-- **Points de terminaison** : méthodes eth_* standards
-- **Format des réponses** : JSON-RPC 2.0
-- **Compatibilité** : geth, metrics, autres clients Ethereum
+- **Passerelle Web3 (`server.go`) :**
+  - Support natif des requêtes JSON-RPC 2.0 sur `http://localhost:8545`.
+  - En-têtes CORS universels pour intégration directe avec les navigateurs et DApps.
+  - Implémentation des standards Ethereum : `eth_chainId`, `eth_blockNumber`, `eth_getBalance`, `eth_getBlockByNumber`, `web3_clientVersion`.
 
-Fichier principal : `server.go` - Exposition des méthodes RPC
+---
 
-### Flux de données
+## 3. Paramètres du Bloc Genesis
 
-1. **Nouveau bloc** : reçu → validation consensus → mise à jour état → ajout chaîne
-2. **Requête RPC** : entrante → traitement → réponse JSON
-3. **Transaction** : reçue → inclusion dans bloc → validation → état mis à jour
+Le réseau initialisé par **Martial Zinsou** repose sur la spécification PulseChain suivante :
+- **Chain ID :** `369` (PulseChain Mainnet) / `943` (Testnet-v4)
+- **Coinbase initial :** `0x2b5AD5c4795c026514f8317c7a215E218DcCD6cF`
+- **Gas Limit :** `30 000 000`
+- **Période Clique PoA :** `3 secondes`
 
-### Points d'extension
+---
 
-- Ajouter de nouveaux hard forks dans la configuration genesis
-- Étendre les méthodes RPC dans internal/rpc/server.go
-- Implémenter de nouveaux algorithmes de consensus
-- Ajouter des fonctionnalités de couche de réseau P2P
+## 4. Propriété Intellectuelle et Licence
+
+Ce projet est la création originale de **Martial Zinsou**.  
+Distribué sous licence MIT. Toute utilisation ou réutilisation doit mentionner l'auteur d'origine.
+
+**Contact & Profil :** [https://github.com/martialzinsou](https://github.com/martialzinsou)

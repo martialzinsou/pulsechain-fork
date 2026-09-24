@@ -1,4 +1,5 @@
 {
+  "comment": "PulseChain Fork Genesis Specification - Auteur : Martial Zinsou",
   "config": {
     "chainId": 369,
     "homesteadBlock": 0,
