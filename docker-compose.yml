@@ -1,0 +1,27 @@
+# ==============================================================================
+# Docker Compose - Environnement de développement PulseChain Fork
+# Auteur : Martial Zinsou
+# ==============================================================================
+
+version: '3.8'
+
+services:
+  pulsenode:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pulsechain-fork-node
+    restart: unless-stopped
+    ports:
+      - "8545:8545"   # JSON-RPC HTTP
+      - "30303:30303" # P2P Discovery
+    environment:
+      - CHAIN_ID=369
+      - NETWORK_NAME=PulseChain-Fork
+      - VERBOSE=true
+    volumes:
+      - pulse_data:/app/data
+
+volumes:
+  pulse_data:
+    driver: local

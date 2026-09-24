@@ -1,0 +1,15 @@
+# macOS
+.DS_Store
+
+# Binaries
+pulsenoded
+*.exe
+*.test
+*.out
+
+# Data directories
+data/
+*.log
+
+# Docker
+.docker/

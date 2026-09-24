@@ -1,5 +1,8 @@
 package main
 
+// Auteur : Martial Zinsou
+// Point d'entrée principal du nœud PulseChain Fork
+
 import (
 	"log"
 	"net/http"
@@ -9,37 +12,38 @@ import (
 	"pulsechain-fork/internal/consensus"
 	"pulsechain-fork/internal/ledger"
 	"pulsechain-fork/internal/rpc"
-	"github.com/ethereum/go-ethereum/rlp"
 )
-
-// Auteur : Martial Zinsou
-// Point d'entrée principal du nœud PulseChain Fork
 
 func main() {
 	// Initialisation du bloc génèse
 	gen := genesis.DefaultGenesis()
-	log.Println("Initialisation du bloc génèse PulseChain")
-	log.Printf("ChainID: %d, Coinbase: %s", gen.ChainID, gen.Coinbase)
+	log.Println("======================================================")
+	log.Println("     PULSECHAIN FORK NODE - MARTIAL ZINSOU            ")
+	log.Println("======================================================")
+	log.Printf("[+] Initialisation du bloc génèse PulseChain...")
+	log.Printf("[+] ChainID: %d | Coinbase: %s", gen.ChainID, gen.Coinbase)
 
 	// Création de la base de données du ledger
 	ledgerDB := ledger.NewStateDB()
 
-	// Initialisation du consensus
+	// Initialisation du consensus Proof-of-Authority
 	cons := consensus.NewProofOfAuthority()
 
 	// Création de la blockchain
 	bc := blockchain.NewBlockchain(gen, ledgerDB, cons)
 
-	// Démarrage du serveur RPC
+	// Initialisation du serveur RPC JSON-RPC 2.0
 	rpcServer := rpc.NewServer(bc)
+	http.Handle("/", rpcServer)
 	http.Handle("/rpc", rpcServer)
 
-	log.Println("Démarrage du nœud PulseChain Fork...")
-	log.Printf("RPC disponible sur http://localhost:8545/rpc")
-	log.Printf("Blockchain initialisée avec %d blocs", bc.BlockCount())
+	log.Println("[+] Serveur JSON-RPC prêt à recevoir les connexions")
+	log.Printf("[+] RPC Endpoint: http://localhost:8545 (compatible MetaMask/Ethers)")
+	log.Printf("[+] Blocs initialisés: %d (Bloc Genesis actif)", bc.BlockCount())
+	log.Println("[+] Démarrage de l'écoute sur le port :8545 ...")
 
 	// Démarrage du serveur HTTP
 	if err := http.ListenAndServe(":8545", nil); err != nil {
-		log.Fatalf("Erreur du serveur RPC: %v", err)
+		log.Fatalf("[-] Erreur critique du serveur RPC: %v", err)
 	}
 }
