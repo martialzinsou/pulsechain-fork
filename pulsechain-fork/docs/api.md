@@ -184,4 +184,76 @@ Retourne l'ID réseau sous forme de chaîne décimale.
 ---
 
 **Auteur du projet :** Martial Zinsou  
-**Dépôt :** https://github.com/martialzinsou/pulsechain-fork
+**Dépôt :** https://github.com/martialzinsou/pulsechain-fork  
+
+---
+
+## Captures d'écran des Endpoints RPC
+
+### Représentation visuelle des réponses JSON-RPC :
+
+**1. Exemple de réponse `eth_chainId` :**
+```
+HTTP POST http://localhost:8545
+Content-Type: application/json
+
+{
+  "jsonrpc": "2.0",
+  "method": "eth_chainId",
+  "params": [],
+  "id": 1
+}
+```
+→ **Affichage résultat** : `0x171` (représente la chaîne PulseChain Mainnet, ChainID 369)
+
+**2. Exemple de réponse `eth_blockNumber` :**
+```
+HTTP POST http://localhost:8545
+Content-Type: application/json
+
+{
+  "jsonrpc": "2.0",
+  "method": "eth_blockNumber",
+  "params": [],
+  "id": 1
+}
+```
+→ **Affichage résultat** : `0x0` (premier bloc / bloc Genesis)
+
+**3. Exemple de réponse `eth_getBalance` :**
+```
+HTTP POST http://localhost:8545
+Content-Type: application/json
+
+{
+  "jsonrpc": "2.0",
+  "method": "eth_getBalance",
+  "params": ["0x2b5AD5c4795c026514f8317c7a215E218DcCD6cF", "latest"],
+  "id": 1
+}
+```
+→ **Affichage résultat** : `0xd3c21bcecceda1000000` (solde en Wei du compte Genesis)
+
+**4. Exemple de réponse `eth_getBlockByNumber` :**
+```
+HTTP POST http://localhost:8545
+Content-Type: application/json
+
+{
+  "jsonrpc": "2.0",
+  "method": "eth_getBlockByNumber",
+  "params": ["0x0", true],
+  "id": 1
+}
+```
+→ **Affichage résultat** : Objet JSON complet avec number, hash, miner, gaz, etc.
+
+### Guidelines pour les captures d'écran documentation :
+
+- **Format recommandé** : PNG (qualité élevée, texte lisible)
+- **Zone de capture** : Se concentrer sur la partie JSON de la réponse dans l'outil de développement
+- **Légende** : Toujours inclure la méthode RPC et un exemple de paramètre
+- **Lisibilité** : Zoomer si nécessaire pour afficher les adresses hexadécimales complètes
+- **Outils** : Utiliser les "Developer Tools" du navigateur (F12), section "Response" ou "Pretty Print"
+
+---

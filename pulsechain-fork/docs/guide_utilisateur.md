@@ -148,6 +148,37 @@ docker compose down
 
 ---
 
+## 8. Captures d'écran et Documentation Visuelle
+
+### Comment capturer des captures d'écran du nœud PulseChain Fork :
+
+**1. Interface RPC (Port 8545) :**
+- Ouvrez votre navigateur à l'adresse `http://localhost:8545`
+- Utilisez l'outil de développement (F12) ou l'extension "JSON Viewer" pour formater les réponses
+- Captures recommandées :
+  - La réponse de `eth_chainId` montrant `0x171` (369)
+  - La réponse de `eth_blockNumber` montrant le dernier bloc
+  - La réponse de `eth_getBalance` montrant le solde du compte Genesis
+
+**2. Console de démarrage du nœud :**
+- Lancez le nœud avec `go run ./cmd/pulsenoded` ou `./pulsenoded`
+- Les captures suivantes sont utiles pour la documentation :
+  - La bannière `PULSECHAIN FORK NODE - MARTIAL ZINSOU`
+  - Les logs d'initialisation du bloc génèse
+  - Le message de prêt du serveur RPC sur le port 8545
+
+**3. Interface MetaMask :**
+- Après avoir ajouté le réseau PulseChain Fork (ChainID 369)
+- Capture de la sélection du réseau dans le menu déroulant de MetaMask
+- Capture du solde initial affiché pour le compteGenesis
+
+### Outils recommandés :
+- **Navigateur** : Chrome, Firefox, Edge (outils de développement F12)
+- **Extensions** : JSON Viewer, MetaMask interface
+- **Outils système** : PrtScn (Windows), Cmd+Shift+4 (Mac), `gnome-screenshot` ou `scrot` (Linux)
+
+---
+
 ## 9. Foire Aux Questions (FAQ)
 
 ### Q : Le port 8545 est déjà occupé ?

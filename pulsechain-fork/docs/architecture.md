@@ -108,3 +108,42 @@ Ce projet est la création originale de **Martial Zinsou**.
 Distribué sous licence MIT. Toute utilisation ou réutilisation doit mentionner l'auteur d'origine.
 
 **Contact & Profil :** [https://github.com/martialzinsou](https://github.com/martialzinsou)
+
+---
+
+## 5. Documentation des Captures d'écran
+
+### Recommandations pour la capture et l'intégration de captures d'écran :
+
+**1. Capture d'écran du serveur RPC (port 8545) :**
+- URL : `http://localhost:8545`
+- Méthodes capturées typiques :
+  - `eth_chainId` → réponse `0x171`
+  - `eth_blockNumber` → numéro du dernier bloc
+  - `eth_getBalance` → solde du compte en Wei
+
+**2. Capture d'écran de la console de démarrage :**
+- Commande : `go run ./cmd/pulsenoded` ou `./pulsenoded`
+- Éléments à inclure :
+  - En-tête `PULSECHAIN FORK NODE - MARTIAL ZINSOU`
+  - Logs d'initialisation du bloc génèse
+  - Message de prêt du serveur RPC
+
+**3. Capture d'écran de l'interface MetaMask :**
+- Réseau ajouté : `PulseChain Fork (Martial Zinsou)`
+- ID de chaîne : `369` (0x171)
+- Devise : `PLS`
+- Solde initial du compte Genesis
+
+**Outils recommandés pour la capture :**
+- **Navigateurs** : F12 → Onglet "Network" ou "Console"
+- **Extensions** : JSON Viewer, MetaMask interface
+- **Capture système** : Outils intégrés selon l'OS (Windows/PrtScn, Mac/Cmd+Shift+4, Linux/scrot)
+
+**Bonnes pratiques de documentation :**
+- Inclure des légendes explicatives pour chaque capture
+- Utiliser des formats d'image optimisés (PNG pour les captures d'interface, JPEG pour les captures de console)
+- Maintenir une cohérence visuelle dans tous les documents du projet
+- Placer les captures à côté du texte référencé pour une meilleure lisibilité
+
+---
